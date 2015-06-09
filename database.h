@@ -17,25 +17,24 @@ public:
     QString last_query_error () {return query->lastError().text();}
 
     // insert methods
-    int add_solution (QString name, QString description, QString owner);
-    int add_question (int survey_index, QString wording, int q_type, int page_num);
+    int add_solution (QString text);
+    int add_question (QString text);
+    int process_seance (int solution_id);
 
     // get methods
-    QStringList get_survey_list (QString);
-
-    // secutity
-    char* hash_password (QString password);
+    QStringList get_question (QString);
 
     // other
-    int login (QString name, QString password);
 
 private:
     QSqlDatabase db;
     QSqlQuery *query;
     QString error;
+    int question_id;
+    int seance_id;
 };
 
-extern data_base *db;
+extern database *db;
 
 
 #endif // DATABASE_H

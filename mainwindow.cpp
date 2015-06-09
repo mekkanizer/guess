@@ -8,7 +8,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    connect (ui->pushButton,SIGNAL(clicked()),this,SLOT(click()));
+    ui->label->hide();
+    ui->plainTextEdit->hide();
+    ui->pushButton->hide();
 }
 
 MainWindow::~MainWindow()
@@ -16,9 +18,33 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::click()
+void MainWindow::input()
 {
-    Question* q = new Question(this);
-    q->show();
-    this->hide();
+    ui->label->show();
+    ui->plainTextEdit->show();
+    ui->pushButton->show();
+}
+
+void MainWindow::on_question_triggered()
+{
+    input();
+    question = true;
+}
+
+void MainWindow::on_solution_triggered()
+{
+    input();
+    question = false;
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    if (question)
+    {
+
+    }
+    else
+    {
+
+    }
 }

@@ -16,11 +16,16 @@ public:
     ~MainWindow();
 
 private slots:
-//    void on_pushButton_clicked();
-    void click();
+    void input();
+    void on_question_triggered();
+
+    void on_solution_triggered();
+
+    void on_pushButton_clicked();
 
 private:
     Ui::MainWindow *ui;
+    bool question;
 };
 
 #endif // MAINWINDOW_H

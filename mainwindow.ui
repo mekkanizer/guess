@@ -14,17 +14,43 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
+   <widget class="QPlainTextEdit" name="plainTextEdit">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>40</y>
+      <width>261</width>
+      <height>181</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>10</y>
+      <width>101</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Введите текст</string>
+    </property>
+   </widget>
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>200</x>
-      <y>210</y>
-      <width>95</width>
+      <x>170</x>
+      <y>240</y>
+      <width>99</width>
       <height>27</height>
      </rect>
     </property>
     <property name="text">
-     <string>Поехали!</string>
+     <string>Добавить</string>
     </property>
    </widget>
   </widget>
@@ -37,6 +63,29 @@
      <height>25</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuGuess">
+    <property name="title">
+     <string>guess</string>
+    </property>
+    <addaction name="start"/>
+    <addaction name="exit"/>
+   </widget>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>База знаний</string>
+    </property>
+    <widget class="QMenu" name="menu_2">
+     <property name="title">
+      <string>Добавить</string>
+     </property>
+     <addaction name="separator"/>
+     <addaction name="question"/>
+     <addaction name="solution"/>
+    </widget>
+    <addaction name="menu_2"/>
+   </widget>
+   <addaction name="menuGuess"/>
+   <addaction name="menu"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -47,6 +96,26 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="start">
+   <property name="text">
+    <string>Начать</string>
+   </property>
+  </action>
+  <action name="exit">
+   <property name="text">
+    <string>Выход</string>
+   </property>
+  </action>
+  <action name="question">
+   <property name="text">
+    <string>Вопрос</string>
+   </property>
+  </action>
+  <action name="solution">
+   <property name="text">
+    <string>Решение</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

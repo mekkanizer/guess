@@ -1,4 +1,3 @@
--- DELIMITER $$
 CREATE PROCEDURE `choose` (OUT q INT)
 BEGIN
 	-- temporary tables
@@ -74,5 +73,3 @@ BEGIN
     CLOSE cur_q;
 END;
 END
--- END$$
--- DELIMITER ;

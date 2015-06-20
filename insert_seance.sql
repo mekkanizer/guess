@@ -5,6 +5,7 @@ BLOCK1: BEGIN
     CREATE TEMPORARY TABLE compared_log
 	LIKE seance_log;
 BLOCK2: BEGIN
+	DECLARE diff BOOL DEFAULT TRUE;
     DECLARE current_id, se_id, q_id, ans INT;
     DECLARE compared CURSOR FOR
 		SELECT seance_id, question_id, answer FROM seance_log
@@ -33,6 +34,7 @@ BLOCK2: BEGIN
 				SELECT seance_id, question_id, answer FROM seance_log
 				WHERE seance_id = current_id;
 			DECLARE CONTINUE HANDLER FOR NOT FOUND SET inner_done = TRUE;
+            DELETE FROM log;
             OPEN answers;
             WHILE NOT inner_done DO
 				FETCH answers INTO se_id, q_id, ans;
@@ -40,8 +42,23 @@ BLOCK2: BEGIN
 					VALUES (se_id, q_id, ans);
 			END WHILE;
             CLOSE answers;
-            -- comparison
-            -- if it's the same, SET done = FALSE
+            SELECT IF ((SELECT COUNT(*) FROM (SELECT 'log' AS `set`, l.*
+				FROM log l
+				WHERE ROW(l.seance_id, l.question_id, l.answer) NOT IN
+				(SELECT * FROM compared_log)
+				UNION ALL
+				SELECT 'compared_log' AS `set`, cl.*
+				FROM compared_log cl
+				WHERE ROW(cl.seance_id, cl.question_id, cl.answer) NOT IN
+				(SELECT * FROM log)
+                )),FALSE,TRUE) INTO diff;
+			CASE WHEN diff = FALSE
+				THEN DELETE FROM seance_log
+					WHERE seance_id = compared_id;
+                UPDATE seances SET count = count + 1
+					WHERE seance_id = compared_id;
+			END CASE;
+			SET done = NOT dupe;
 		END BLOCK3;
     END WHILE;
     CLOSE seance;

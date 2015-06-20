@@ -1,3 +1,5 @@
+
+
 #include "database.h"
 
 #include <QString>
@@ -39,11 +41,12 @@ int database::add_knowledge(QString table, QString text)
 
 QString database::get_question()
 {
-    query->exec("CALL choose(@q,@t);");
-    query->exec("SELECT @q;");
-    question_id = query->value(0);
-    query->exec("SELECT @t;");
-    return query->value(0);
+    QString result;
+    query->prepare("CALL choose(:q,:t)");
+    query->bindValue(":q",question_id);
+    query->bindValue(":t",result);
+    query->exec();
+    return result;
 }
 
 int database::add_answer(int answer)
@@ -51,7 +54,7 @@ int database::add_answer(int answer)
     if (seance_id == 0)
     {
         // does "count" field automatically become "1"?
-        query->exec("INSERT INTO seances (seances_id,solution,count) VALUES (NULL);");
+        query->exec("INSERT INTO seances (solution) VALUES (NULL);");
         query->exec("SELECT MAX(seance_id) FROM seances;");
         seance_id = query->value(0);
     }
@@ -72,6 +75,7 @@ int database::process_seance(int solution_id)
         query->exec(QString("DELETE FROM seances WHERE seance_id = %1;").arg(seance_id));
     }
 }
+
 
 
 

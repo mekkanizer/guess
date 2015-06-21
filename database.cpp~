@@ -41,12 +41,12 @@ int database::add_knowledge(QString table, QString text)
 
 QString database::get_question()
 {
-    query->prepare("CALL choose(0,:q)");
+    QString result;
+    query->prepare("CALL choose(:q,:t)");
     query->bindValue(":q",question_id);
-    query->prepare("SELECT text FROM questions WHERE question_id = :q");
-    query->bindValue(":q",question_id);
+    query->bindValue(":t",result);
     query->exec();
-    return query->value(0).toString();
+    return result;
 }
 
 int database::add_answer(int answer)
@@ -56,7 +56,7 @@ int database::add_answer(int answer)
         // does "count" field automatically become "1"?
         query->exec("INSERT INTO seances (solution) VALUES (NULL);");
         query->exec("SELECT MAX(seance_id) FROM seances;");
-        seance_id = query->value(0).toInt();
+        seance_id = query->value(0);
     }
     query->exec(QString("INSERT INTO seance_log (seance_id,question_id,answer)\
                         VALUES (%1,%2,%3);").arg(seance_id,question_id,answer));

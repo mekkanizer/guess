@@ -5,6 +5,7 @@ BLOCK1: BEGIN
     CREATE TEMPORARY TABLE compared_log
 	LIKE seance_log;
 BLOCK2: BEGIN
+	DECLARE done, inner_done BOOLEAN DEFAULT FALSE;
 	DECLARE diff BOOL DEFAULT TRUE;
     DECLARE current_id, se_id, q_id, ans INT;
     DECLARE compared CURSOR FOR
@@ -22,8 +23,7 @@ BLOCK2: BEGIN
 			VALUES (se_id, q_id, ans);
     END WHILE;
     CLOSE compared;
-    -- not really sure if true
-    SET done = TRUE;
+    SET done = FALSE;
     
     OPEN seance;
     WHILE NOT done DO
@@ -58,7 +58,7 @@ BLOCK2: BEGIN
                 UPDATE seances SET count = count + 1
 					WHERE seance_id = compared_id;
 			END CASE;
-			SET done = NOT dupe;
+			SET done = NOT diff;
 		END BLOCK3;
     END WHILE;
     CLOSE seance;

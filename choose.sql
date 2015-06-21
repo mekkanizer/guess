@@ -1,4 +1,4 @@
-CREATE PROCEDURE `choose` (OUT q INT)
+CREATE PROCEDURE `choose` (IN p INT,OUT q INT)
 BEGIN
 	-- temporary tables
 	CREATE TEMPORARY TABLE filtered
@@ -8,18 +8,16 @@ BEGIN
 	priori DOUBLE);
 BEGIN
     -- values
+    DECLARE done, inner_done BOOLEAN DEFAULT FALSE;
     DECLARE p_sol, p DOUBLE;
     DECLARE h_max DOUBLE DEFAULT 0;
     DECLARE f_count INT;
     -- containers
     DECLARE q_id, sol_id, ans INT;
-    -- cursors
-    DECLARE cur_s CURSOR FOR
-        SELECT solution_id FROM solutions;
+    -- cursor
     DECLARE cur_q CURSOR FOR
         SELECT question_id FROM questions;
-    -- handlers
-    DECLARE CONTINUE HANDLER FOR NOT FOUND SET inner_done = TRUE;
+    -- handler
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
     -- action time
     OPEN cur_q;
@@ -39,17 +37,22 @@ BEGIN
         SELECT COUNT(*) FROM filtered INTO f_count;
         -- calculate solution probabilities
         -- based on seance count in filtered table
-        DELETE FROM probs;
-        OPEN cur_s;
-        WHILE NOT inner_done DO
-            FETCH cur_s INTO sol_id;
-            INSERT INTO probs (solution_id, priori)
-            SELECT sol_id, count/f_count
-            FROM filtered
-            WHERE solution_id = sol_id;
-        END WHILE;
-        CLOSE cur_s;
-        SET inner_done = TRUE;
+        BEGIN
+            DECLARE cur_s CURSOR FOR
+                SELECT solution_id FROM solutions;
+            DECLARE CONTINUE HANDLER FOR NOT FOUND SET inner_done = TRUE;
+            DELETE FROM probs;
+            OPEN cur_s;
+            WHILE NOT inner_done DO
+                FETCH cur_s INTO sol_id;
+                INSERT INTO probs (solution_id, priori)
+                SELECT sol_id, count/f_count
+                FROM filtered
+                WHERE solution_id = sol_id;
+            END WHILE;
+            CLOSE cur_s;
+            SET inner_done = FALSE;
+        END;
         -- calculate answer probability
         -- based on aforementioned (and calculated) priori
         -- and answer probability given that solution is right
@@ -71,5 +74,6 @@ BEGIN
         SELECT IF (h > h_max, h, h_max) INTO h_max;
     END WHILE;
     CLOSE cur_q;
+    SELECT IF((SELECT p),(SELECT solution_id FROM probs ORDER BY priori DESC LIMIT 1),(SELECT q)) INTO q;
 END;
 END

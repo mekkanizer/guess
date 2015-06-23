@@ -23,6 +23,8 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_start_triggered();
+
 private:
     Ui::MainWindow *ui;
     bool question;

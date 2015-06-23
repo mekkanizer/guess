@@ -49,20 +49,36 @@ QString database::get_question()
     return query->value(0).toString();
 }
 
+QString database::get_solution()
+{
+    QVariant tmp;
+    QString result = "nope";
+    query->prepare("CALL choose(1,:p)");
+    query->bindValue(":p",tmp);
+    double priori = tmp.toDouble();
+    if (priori > 0.9)
+    {
+        query->prepare("SELECT text FROM solutions WHERE solution_id = :p");
+        query->bindValue(":p",priori);
+        query->exec();
+        result = query->value(0).toString();
+    }
+    return result;
+}
+
 int database::add_answer(int answer)
 {
     if (seance_id == 0)
     {
-        // does "count" field automatically become "1"?
         query->exec("INSERT INTO seances (solution) VALUES (NULL);");
         query->exec("SELECT MAX(seance_id) FROM seances;");
         seance_id = query->value(0).toInt();
     }
-    query->exec(QString("INSERT INTO seance_log (seance_id,question_id,answer)\
+    return query->exec(QString("INSERT INTO seance_log (seance_id,question_id,answer)\
                         VALUES (%1,%2,%3);").arg(seance_id,question_id,answer));
 }
 
-int database::process_seance(int solution_id)
+void database::process_seance(int solution_id)
 {
     if (solution_id)
     {

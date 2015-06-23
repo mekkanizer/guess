@@ -1,3 +1,9 @@
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: comments before and after the routine body will not be stored by the server
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
 CREATE PROCEDURE `choose` (IN p INT,OUT q INT)
 BEGIN
 	-- temporary tables
@@ -9,7 +15,7 @@ BEGIN
 BEGIN
     -- values
     DECLARE done, inner_done BOOLEAN DEFAULT FALSE;
-    DECLARE p_sol, p DOUBLE;
+    DECLARE h, p_sol, p DOUBLE;
     DECLARE h_max DOUBLE DEFAULT 0;
     DECLARE f_count INT;
     -- containers

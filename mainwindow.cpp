@@ -48,3 +48,10 @@ void MainWindow::on_pushButton_clicked()
 
     }
 }
+//  connect (ui->pushButton,SIGNAL(clicked()),this,SLOT(click()));
+void MainWindow::on_start_triggered()
+{
+    Question* q = new Question(this);
+    q->show();
+    this->hide();
+}

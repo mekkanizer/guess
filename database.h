@@ -10,19 +10,20 @@ public:
     // base
     database();
 
-    int connect (QString user_name, QString host_name, QString password);
+    int connect ();
 
     // errors
     QString last_error () {return db.lastError().text();}
     QString last_query_error () {return query->lastError().text();}
 
     // insert methods
-    int add_solution (QString text);
-    int add_question (QString text);
-    int process_seance (int solution_id);
+    int add_knowledge(QString table, QString text);
+    void process_seance (int solution_id);
+    int add_answer(int answer);
 
     // get methods
-    QStringList get_question (QString);
+    QString get_question ();
+    QString get_solution ();
 
     // other
 

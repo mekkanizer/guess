@@ -16,7 +16,8 @@ public:
     ~MainWindow();
 
 private slots:
-    void input();
+    void start_input();
+    void end_input();
     void on_question_triggered();
 
     void on_solution_triggered();

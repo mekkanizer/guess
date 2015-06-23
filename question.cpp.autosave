@@ -22,7 +22,6 @@ void Question::closeEvent(QCloseEvent *event)
 
 void Question::showEvent(QShowEvent *event)
 {
-    db->connect();
     ui->label->setText(db->get_question());
     ui->groupBox->hide();
 }

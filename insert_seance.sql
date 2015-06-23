@@ -51,7 +51,7 @@ BLOCK2: BEGIN
 				FROM compared_log cl
 				WHERE ROW(cl.seance_id, cl.question_id, cl.answer) NOT IN
 				(SELECT * FROM log)
-                )),FALSE,TRUE) INTO diff;
+                ) AS matches),FALSE,TRUE) INTO diff;
 			CASE WHEN diff = FALSE
 				THEN DELETE FROM seance_log
 					WHERE seance_id = compared_id;

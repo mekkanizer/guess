@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Guess</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QPlainTextEdit" name="plainTextEdit">
@@ -30,9 +30,9 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>170</x>
+      <x>130</x>
       <y>10</y>
-      <width>101</width>
+      <width>171</width>
       <height>17</height>
      </rect>
     </property>
@@ -60,12 +60,12 @@
      <x>0</x>
      <y>0</y>
      <width>462</width>
-     <height>25</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuGuess">
     <property name="title">
-     <string>guess</string>
+     <string>Сеанс</string>
     </property>
     <addaction name="start"/>
     <addaction name="exit"/>

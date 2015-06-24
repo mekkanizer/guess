@@ -35,14 +35,14 @@ void MainWindow::end_input()
 void MainWindow::on_question_triggered()
 {
     start_input();
-    ui->label->setText("Введите текст вопроса");
+    ui->label->setText(QString::fromLocal8Bit("Введите текст вопроса"));
     question = true;
 }
 
 void MainWindow::on_solution_triggered()
 {
     start_input();
-    ui->label->setText("Введите текст решения");
+    ui->label->setText(QString::fromLocal8Bit("Введите текст решения"));
     question = false;
 }
 

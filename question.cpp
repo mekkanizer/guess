@@ -8,6 +8,7 @@ Question::Question(QWidget *parent) :
     ui(new Ui::Question)
 {
     ui->setupUi(this);
+    ui->label->setWordWrap(true);
 }
 
 Question::~Question()
@@ -22,8 +23,7 @@ void Question::closeEvent(QCloseEvent *event)
 
 void Question::showEvent(QShowEvent *event)
 {
-    ui->label->setText(db->get_question());
-    ui->groupBox->hide();
+    ui->label->setText(QString::fromLocal8Bit("Добавлен ли ваш пользователь в файл sudoers?")/*db->get_question()*/);
 }
 
 void Question::answer_click(int answer)
